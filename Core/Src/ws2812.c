@@ -12,8 +12,16 @@ void Ws2812_Update(){
         Code0,Code0,Code0,Code0,Code0,Code0,Code0,Code0,
         Code0,Code0,Code0,Code0,Code0,Code0,Code0,Code0,
         Code1,Code1,Code1,Code1,Code1,Code1,Code1,Code1,
-  
 
+        Code0,Code0,Code0,Code0,Code0,Code0,Code0,Code0,
+        Code1,Code1,Code1,Code1,Code1,Code1,Code1,Code1,
+        Code0,Code0,Code0,Code0,Code0,Code0,Code0,Code0,
+
+
+        Code1,Code1,Code1,Code1,Code1,Code1,Code1,Code1,   
+        Code0,Code0,Code0,Code0,Code0,Code0,Code0,Code0,
+        Code0,Code0,Code0,Code0,Code0,Code0,Code0,Code0,
+             
         Reset
     };
 
