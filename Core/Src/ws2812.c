@@ -22,7 +22,7 @@ void WS2812_SetAll(uint8_t r,uint8_t g,uint8_t b){
     }
 }
 
-void Ws2812_Update(){
+void WS2812_Update(){
     static uint16_t data[LED_COUNT*3*8+1];
 
     for (uint8_t i = 0; i < LED_COUNT; i++) {

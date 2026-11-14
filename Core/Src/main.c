@@ -20,6 +20,7 @@
 #include "main.h"
 #include "dma.h"
 #include "stm32f1xx_hal.h"
+#include "stm32f1xx_hal_uart.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -28,6 +29,7 @@
 /* USER CODE BEGIN Includes */
 #include "ws2812.h"
 #include <stdint.h>
+#include "command.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,7 +50,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint8_t readbuffer[128];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -59,7 +61,12 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
+  if (huart == &huart2) {
+    Command_Write(readbuffer, Size);
+    HAL_UARTEx_ReceiveToIdle_IT(&huart2, readbuffer, sizeof(readbuffer));
+  }
+}
 /* USER CODE END 0 */
 
 /**
@@ -95,19 +102,32 @@ int main(void)
   MX_TIM3_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  uint8_t command[60];
+  uint8_t lenth = 0;
 
+  HAL_UARTEx_ReceiveToIdle_IT(&huart2, readbuffer, sizeof(readbuffer));
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    for (uint8_t r = 0; r <= 0xFF;r++) {
-      WS2812_SetAll(r, 0, 0);
-      Ws2812_Update();
-      HAL_Delay(10);
-      
+    lenth = Command_GetCommand(command);
+    if (lenth > 0) {
+      if (command[2] == 0x01) {
+        for (uint8_t i = 0; i < LED_COUNT; i++) {
+          WS2812_Set(i,command[3+3*i],command[3+3*i+1],command[3+3*i+2]);
+        }
+        WS2812_Update();
+      }
     }
+
+    // for (uint8_t r = 0; r <= 0xFF;r++) {
+    //   WS2812_SetAll(r, 0, 0);
+    //   Ws2812_Update();
+    //   HAL_Delay(10);
+
+    // }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
