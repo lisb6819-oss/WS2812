@@ -21,7 +21,7 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-
+#include "usmart_port.h"
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart2;
@@ -51,7 +51,7 @@ void MX_USART2_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART2_Init 2 */
-
+  usmart_uart_rx_init();
   /* USER CODE END USART2_Init 2 */
 
 }
@@ -118,6 +118,17 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 }
 
 /* USER CODE BEGIN 1 */
+int __io_putchar(int ch)
+{
+  uint8_t data = (uint8_t)ch;
+
+  if (HAL_UART_Transmit(&huart2, &data, 1, 100) != HAL_OK)
+  {
+    return -1;
+  }
+
+  return ch;
+}
 
 /* USER CODE END 1 */
 

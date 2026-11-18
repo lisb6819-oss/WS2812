@@ -27,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include "ws2812.h"
 #include <stdint.h>
+#include "usmart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -94,19 +95,19 @@ int main(void)
   MX_TIM3_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  WS2812_SetAll(0xFF, 0, 0);
+  usmart_dev.init(72);  /* 初始化USMART */
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    for (uint8_t r = 0; r <= 0xFF;r++) {
-      WS2812_SetAll(r, 0, 0);
+
       Ws2812_Update();
       HAL_Delay(10);
       
-    }
+    
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
